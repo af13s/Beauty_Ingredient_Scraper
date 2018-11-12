@@ -76,13 +76,13 @@ if __name__ == "__main__":
     products = {}
 
     for line in shop:
+        if line[0] == "#":
+            continue
         products[line] = {}
 
     shop.close() #close list of retailers
 
     for url in products:
-        if url[0] == "#":
-            continue
         products[url] = Scraper(url , xpaths[0])
 
 
@@ -93,3 +93,8 @@ if __name__ == "__main__":
     sys.stdout = ingredients_out #redirecting output to output file shoelist.txt
     print(save)
     sys.stdout = orig_sys
+
+    with open('ingredients.csv', 'w') as file:  # Just use 'w' mode in 3.x
+        out = csv.DictWriter(file, products.keys())
+        out.writeheader()
+        out.writerow(products)
